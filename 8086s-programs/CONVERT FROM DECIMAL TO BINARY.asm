@@ -1,0 +1,53 @@
+.MODEL SMALL
+.STACK 100H
+
+.DATA 
+X DB 3
+S2 DB 8 DUP(' ') ,'$'
+S1 DB 8 DUP(' ') 
+.CODE
+MOV AX,@DATA
+MOV DS,AX
+
+LEA SI,S1
+MOV CX,8
+CALL CONVERT 
+MOV CX,8
+LEA DI,S1+7
+LEA SI,S2 
+CALL PRINT
+LEA DX,S2
+MOV AH,9
+INT 21H
+MOV AH,4CH
+INT 21H
+
+CONVERT PROC
+  BACK:  
+    MOV AL,X
+    SHR AL,1
+    MOV X,AL
+    JC OO
+    MOV [SI],0
+    INC SI
+    LOOP BACK
+    JMP END
+  OO:
+    MOV [SI],1
+    INC SI
+    LOOP BACK
+    JMP END
+  END:
+    RET 
+CONVERT ENDP
+
+PRINT PROC
+    ZZ: 
+     OR [DI],30H 
+     MOV AL,[DI]
+     MOV [SI],AL 
+     INC SI 
+     DEC DI
+     LOOP ZZ
+     RET  
+PRINT ENDP     

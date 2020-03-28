@@ -1,0 +1,29 @@
+.model small
+.stack 100h
+.data 
+A DB 5,10,3,1,2
+SUM DB 5 DUP(' ')
+                      
+.CODE
+MOV AX,@DATA
+MOV DS,AX
+
+LEA SI,A 
+LEA DI,SUM
+MOV CX,5
+MOV DL,0
+BB:
+MOV AL,[SI]
+AA:
+ADD DL,AL
+DEC AL
+CMP AL,0
+JNZ AA
+MOV [DI],DL
+INC SI
+INC DI 
+MOV DL,0
+LOOP BB
+
+MOV AH,4CH
+INT 21H

@@ -1,0 +1,37 @@
+.model smal
+.stack 100h
+.data 
+A DB 3,3,3,3,3                      
+.CODE
+MOV AX,@DATA
+MOV DS,AX  
+   
+MOV CH,5         
+LEA SI,A
+LEA DI,A
+AA:
+MOV CL,5
+MOV AL,[SI]
+B:         
+CMP [DI],AL 
+JNZ C
+INC BL   ;COUNTER 
+CMP BL,DL
+JC Z
+MOV DL,BL  ;SAVE TIMES
+MOV BH,AL  ;IS NUMBER
+Z:
+C:
+INC DI
+DEC CL
+JNZ B
+LEA DI,A 
+MOV BL,0
+INC SI
+DEC CH
+JNZ AA
+JMP END
+             
+END:
+MOV AH,4CH
+INT 21H

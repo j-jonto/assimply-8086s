@@ -1,0 +1,39 @@
+.model small
+.stack 100h
+.data 
+X DB 3,1,4,2,10
+Y DB 5 DUP(' ')
+                      
+.CODE
+MOV AX,@DATA
+MOV DS,AX  
+
+LEA BX,X
+LEA SI,X  ;SI=3
+LEA DI,X  ;DI=3
+
+MOV CH,5 
+K:
+MOV AL,[SI]
+MOV CL,5
+N:
+CMP AL,[DI]
+JNC AA
+MOV DL,[DI]
+JMP L
+AA:
+;MOV DL,AL
+L:
+INC DI
+DEC CL
+JNZ N 
+MOV [BX],DL
+INC BX
+INC SI  
+dec cl
+LEA DI,X+1
+DEC CH  
+JNZ K
+
+MOV AH,4CH
+INT 21H
